@@ -7,9 +7,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
-import 'package:front_sena/Provider/client_provider.dart';
-import 'package:front_sena/Provider/inventory_provider.dart';
-import 'package:front_sena/Provider/service_request_provider.dart';
+import 'package:front_sena/provider/client_provider.dart';
+import 'package:front_sena/provider/inventory_provider.dart';
+import 'package:front_sena/provider/service_request_provider.dart';
+import 'package:front_sena/provider/employee_provider.dart';
 import 'package:front_sena/MainScreens/ServiceRequest/service_request_screen.dart';
 import 'package:front_sena/MainScreens/Home/home_screen.dart';
 
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<ClientProvider>(create: (_) => ClientProvider()),
           ChangeNotifierProvider<InventoryProvider>(create: (_) => InventoryProvider()),
           ChangeNotifierProvider<ServiceRequestProvider>(create: (_) => ServiceRequestProvider()),
+          ChangeNotifierProvider<EmployeeProvider>(create: (_) => EmployeeProvider()),
           ChangeNotifierProvider(create: (_) => ClientDropdownController()),
         ],
       child: MaterialApp(

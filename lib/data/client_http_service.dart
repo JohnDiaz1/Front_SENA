@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:front_sena/models/client_model.dart';
-import 'package:front_sena/Utils/constants_app.dart';
+import 'package:front_sena/utils/constants_app.dart';
 
 class ClientHttpService {
   final String _url = ConstantsApp.webURL;

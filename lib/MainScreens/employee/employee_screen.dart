@@ -2,34 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:front_sena/utils/constants_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:front_sena/widgets/button_widget_icon.dart';
-import 'package:front_sena/provider/client_provider.dart';
+import 'package:front_sena/provider/employee_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:front_sena/models/client_model.dart';
+import 'package:front_sena/models/employee_model.dart';
 import 'package:front_sena/widgets/pagination_widget.dart';
 import 'package:front_sena/widgets/button_widget_solid.dart';
 import 'package:front_sena/widgets/button_widget_popup.dart';
 import 'package:front_sena/MainScreens/ServiceRequest/service_description_screen.dart';
 
-class ClientsScreen extends StatefulWidget {
-  const ClientsScreen({super.key});
+class EmployeeScreen extends StatefulWidget {
+  const EmployeeScreen({super.key});
 
   @override
-  State<ClientsScreen> createState() => _ClientsScreenState();
+  State<EmployeeScreen> createState() => _EmployeeScreenState();
 }
 
-class _ClientsScreenState extends State<ClientsScreen> {
-  Iterable<TableRow>? clientList;
+class _EmployeeScreenState extends State<EmployeeScreen> {
+  Iterable<TableRow>? employeeList;
   late Iterable<TableRow> filteredServiceRequestList;
-  ClientProvider? provider;
+  EmployeeProvider? provider;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
-        provider = Provider.of<ClientProvider>(context, listen: false);
-        provider?.getAllClient();
-        clientList = provider?.clientsModel
+        provider = Provider.of<EmployeeProvider>(context, listen: false);
+        provider?.getAllEmployees();
+        employeeList = provider?.employeeModel
             .map((client) => _buildServiceRowTile(client));
       });
     });
@@ -92,12 +92,12 @@ class _ClientsScreenState extends State<ClientsScreen> {
                                       onChanged: (searchTerm) {
                                         if (searchTerm.isEmpty) {
                                           setState(() {
-                                            clientList = provider?.clientsModel
+                                            employeeList = provider?.employeeModel
                                                 .map((element) => _buildServiceRowTile(element));
                                           });
                                         } else {
                                           setState(() {
-                                            clientList = provider?.clientsModel
+                                            employeeList = provider?.employeeModel
                                                 .where((element) =>
                                                 element.name.toLowerCase().contains(searchTerm.toLowerCase()))
                                                 .map((element) => _buildServiceRowTile(element));
@@ -165,7 +165,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     ),
                     children: [
                       _buildServiceHeader(),
-                      ...?clientList,
+                      ...?employeeList,
                     ],
                   ),
                 ],
@@ -186,8 +186,8 @@ class _ClientsScreenState extends State<ClientsScreen> {
     );
   }
 
-  TableRow _buildServiceRowTile(Client client) {
-    return TableRow(key: ValueKey(client.clientId), children: [
+  TableRow _buildServiceRowTile(Employee employee) {
+    return TableRow(key: ValueKey(employee.employeeId), children: [
       _buildServiceItem(
           child: Checkbox(
             value: false,
@@ -202,7 +202,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
           child: Padding(
             padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
             child: Text(
-              client.name,
+              employee.name,
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -213,7 +213,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
           child: Padding(
             padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
             child: Text(
-              client.cedula,
+              employee.position,
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -224,7 +224,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
           child: Padding(
             padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
             child: Text(
-              client.phone,
+              employee.phone,
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -234,12 +234,23 @@ class _ClientsScreenState extends State<ClientsScreen> {
       _buildServiceItem(
           child: Padding(
             padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
-            child: Text(
-              client.email,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: Colors.black87.withOpacity(.7)),
+            child: Container(
+              height: 35,
+              width: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: employeeStatusColor(employee.state),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Center(
+                child: Text(
+                  employeeStatusString(employee.state),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black87.withOpacity(.7),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
             ),
           )),
       TableCell(
@@ -263,7 +274,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     text: "Eliminar",
                     onTap: () {
                       setState(() {
-                        provider?.deleteClientById(client.clientId.toString());
+                        provider?.deleteEmployeeById(employee.employeeId);
                       });
                     },
                   ),
@@ -306,7 +317,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
       _buildServiceItem(
           child: Padding(
               padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
-              child: Text("Cedula"))),
+              child: Text("Cargo"))),
       _buildServiceItem(
           child: Padding(
               padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
@@ -314,7 +325,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
       _buildServiceItem(
           child: Padding(
               padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
-              child: Text("Correo"))),
+              child: Text("Estado"))),
       _buildServiceItem(child: Container()),
     ]);
   }
@@ -329,6 +340,30 @@ class _ClientsScreenState extends State<ClientsScreen> {
         ),
       ),
     );
+  }
+
+  employeeStatusColor(EmployeeStatus status) {
+    switch (status) {
+      case EmployeeStatus.Activo:
+        return Colors.green.withOpacity(.3);
+      case EmployeeStatus.Vacaciones:
+        return Colors.yellow.withOpacity(.3);
+      case EmployeeStatus.Inactivo:
+        return Colors.red.withOpacity(.3);
+    }
+  }
+
+  employeeStatusString(EmployeeStatus state) {
+    switch (state) {
+      case EmployeeStatus.Activo:
+        return "Activo";
+      case  EmployeeStatus.Vacaciones:
+        return "Vacaciones";
+      case EmployeeStatus.Inactivo:
+        return "Inactivo";
+      default:
+        throw Exception("Unknown ServiceRequestState: $state");
+    }
   }
 
 }

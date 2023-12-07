@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:front_sena/utils/constants_app.dart';
-import 'package:front_sena/Provider/inventory_provider.dart';
+import 'package:front_sena/provider/inventory_provider.dart';
 import 'package:front_sena/models/inventory_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:front_sena/widgets/button_widget_popup.dart';
