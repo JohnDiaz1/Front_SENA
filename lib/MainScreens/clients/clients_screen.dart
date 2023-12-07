@@ -262,9 +262,8 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     iconColor: Colors.red,
                     text: "Eliminar",
                     onTap: () {
-                      // Lógica para la opción "Eliminar"
                       setState(() {
-                        //provider?.deleteServiceRequestById(serviceRequest.requestId.toString());
+                        provider?.deleteClientById(client.clientId.toString());
                       });
                     },
                   ),

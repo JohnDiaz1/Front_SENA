@@ -26,4 +26,22 @@ class ClientHttpService {
       throw("Error al obtener api");
     }
   }
+
+  Future<String> deleteClientById(String clientId) async {
+    try {
+      var uri = Uri.parse(_url + "deleteClient/${clientId}");
+      var response = await http.delete(uri, headers: {"Content-Type": "application/json"});
+
+      if (response.statusCode == 204) {
+        return "Se elimino correctamente";
+      } else {
+        throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+      }
+
+    } catch(error) {
+      print("Error en deleteClientById: $error");
+      throw "Error inesperado";
+    }
+  }
+
 }

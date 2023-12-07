@@ -286,7 +286,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     onTap: () {
                       // Lógica para la opción "Eliminar"
                       setState(() {
-                        //provider?.deleteServiceRequestById(serviceRequest.requestId.toString());
+                        provider?.deleteItemById(item.inventoryId.toString());
                       });
                     },
                   ),
