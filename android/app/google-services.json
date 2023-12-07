@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "70488794227",
+    "project_id": "platzi-flutter-e605a",
+    "storage_bucket": "platzi-flutter-e605a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70488794227:android:96b6129982dc6fb6a6b606",
+        "android_client_info": {
+          "package_name": "com.anncode.platzitripsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70488794227-6gbjbsg0ftn49alako7nmqb22ummigle.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSkYD4dhpA_F_zAXPAJLAPqLH002bG2ds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70488794227-6gbjbsg0ftn49alako7nmqb22ummigle.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "70488794227-hs8k9pq9nmql5t5vrprc8dglp49tkr4h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anncode.platziTripsApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70488794227:android:63dc5e13fccb5885a6b606",
+        "android_client_info": {
+          "package_name": "com.sena.johndiaz.front_sena"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70488794227-6gbjbsg0ftn49alako7nmqb22ummigle.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSkYD4dhpA_F_zAXPAJLAPqLH002bG2ds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70488794227-6gbjbsg0ftn49alako7nmqb22ummigle.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "70488794227-hs8k9pq9nmql5t5vrprc8dglp49tkr4h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anncode.platziTripsApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

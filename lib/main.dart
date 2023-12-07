@@ -1,7 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:front_sena/views/home.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'MainScreens/Welcome/welcome_screen.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'dart:ui';
+import 'package:provider/provider.dart';
+import 'package:front_sena/Provider/client_provider.dart';
+import 'package:front_sena/Provider/inventory_provider.dart';
+import 'package:front_sena/Provider/service_request_provider.dart';
+import 'package:front_sena/MainScreens/ServiceRequest/service_request_screen.dart';
+import 'package:front_sena/MainScreens/Home/home_screen.dart';
 
-void main() {
+Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   runApp(const MyApp());
 }
 
@@ -11,28 +41,27 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ClientProvider>(create: (_) => ClientProvider()),
+          ChangeNotifierProvider<InventoryProvider>(create: (_) => InventoryProvider()),
+          ChangeNotifierProvider<ServiceRequestProvider>(create: (_) => ServiceRequestProvider()),
+          ChangeNotifierProvider(create: (_) => ClientDropdownController()),
+        ],
+      child: MaterialApp(
+        title: 'Sena App',
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: ThemeData(
+          primaryColor: Color(0xff2c2b50),
+          primaryColorDark: Color(0xff050028),
+          primaryColorLight: Color(0xff57547c),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          useMaterial3: true,
+        ),
+        home: HomeScreen(),
       ),
-      home: Home(),
     );
   }
 }
