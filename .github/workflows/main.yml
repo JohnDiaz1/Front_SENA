@@ -26,7 +26,7 @@ jobs:
       - name: Start Web Release Build
         run: flutter build web --web-renderer canvaskit  --release
       - name: Upload Web Build Files
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: web-release
           path: ./build/web
@@ -36,15 +36,15 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Download Web Release
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: web-release
       - name: Sync Files TO CPANEL
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ftp.towogames.com
-          username: deployapi@towogames.com
-          password: ${{ secrets.password }}
-          protocol: ftps
-          port: 1257
-          server-dir: public_html/
+          server: ${{ secrets.SERVER_ID }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          protocol: ${{ secrets.PROTOCOL }}
+          port: ${{ secrets.PORT_FTP }}
+          #server-dir: public_html/
