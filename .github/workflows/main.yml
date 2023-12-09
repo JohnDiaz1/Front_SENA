@@ -42,7 +42,7 @@ jobs:
       - name: Sync Files TO Demo CPANEL
         uses: SamKirkland/FTP-Deploy-Action@4.1.0
         with:
-          server: ${{ secrets.SERVER_ID }}
+          server: ${{secrets.SERVER_ID}}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          server-dir: /
+          #server-dir: /home/rtowog...om/deployapi
