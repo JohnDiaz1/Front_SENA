@@ -42,7 +42,7 @@ jobs:
       - name: Sync Files TO CPANEL
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.SERVER_ID }}
+          server: 20.232.183.199
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           protocol: ${{ secrets.PROTOCOL }}
