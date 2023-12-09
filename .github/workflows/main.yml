@@ -39,8 +39,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: web-release
-      - name: Sync Files TO Demo CPANEL
-        uses: SamKirkland/FTP-Deploy-Action@4.3.4
+      - name: Sync Files TO CPANEL
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{secrets.SERVER_ID}}
           username: ${{ secrets.USERNAME }}
