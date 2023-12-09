@@ -45,5 +45,6 @@ jobs:
           server: ftp.towogames.com
           username: deployapi@towogames.com
           password: ${{ secrets.PASSWORD }}
+          protocol: ftps
           port: 1257
           #server-dir: /home/rtowog...om/deployapi
