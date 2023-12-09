@@ -42,8 +42,8 @@ jobs:
       - name: Sync Files TO CPANEL
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{secrets.SERVER_ID}}
-          username: ${{ secrets.USERNAME }}
+          server: ftp.towogames.com
+          username: deployapi@towogames.com
           password: ${{ secrets.PASSWORD }}
           port: 1257
           #server-dir: /home/rtowog...om/deployapi
