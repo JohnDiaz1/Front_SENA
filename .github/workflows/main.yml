@@ -40,9 +40,10 @@ jobs:
         with:
           name: web-release
       - name: Sync Files TO Demo CPANEL
-        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.4
         with:
           server: ${{secrets.SERVER_ID}}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
+          port: 1257
           #server-dir: /home/rtowog...om/deployapi
