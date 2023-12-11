@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   var currentIndex = 0;
+  var currentTitle = "";
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,18 @@ class _HomeScreenState extends State<HomeScreen> {
         case 4: return ServiceDescriptionScreen();
         default:
           return const MainContent();
+      }
+    }
+
+    String buildTitleString({required int currentIndex}) {
+      switch(currentIndex){
+        case 0: return "Solicitudes de servicio";
+        case 1: return "Clientes";
+        case 2: return "Inventario";
+        case 3: return "Empleados";
+        case 4: return "Solicitudes de servicio";
+        default:
+          return "Solicitudes de servicio";
       }
     }
 
@@ -77,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Padding(
                             padding: EdgeInsets.only(left: ConstantsApp.defaultPadding * 2, top: ConstantsApp.defaultPadding * 2),
                             child: Text(
-                                "Title of Page",
+                              buildTitleString(currentIndex: currentIndex),
                               style: Theme.of(context).textTheme.headline6?.copyWith(color: Colors.black),
                             ),
                           ),

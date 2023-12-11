@@ -35,17 +35,21 @@ class ButtonWidgetSolid extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
+                padding: EdgeInsets.only(left: ConstantsApp.defaultPadding / 2),
                 child: Text(
                   label,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       color: labelAndIconColor ?? Colors.grey.withOpacity(.7)),
                 ),
               ),
-              Icon(
-                icon,
-                color: labelAndIconColor ?? Colors.grey.withOpacity(.8),
-                size: 19,
+              Padding(
+                  padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
+                child: Icon(
+                  icon,
+                  color: labelAndIconColor ?? Colors.grey.withOpacity(.8),
+                  size: 19,
+                ),
               ),
             ],
           ),

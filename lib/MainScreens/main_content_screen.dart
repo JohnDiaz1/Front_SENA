@@ -127,20 +127,12 @@ class _MainContentState extends State<MainContent> {
                         ),
                         Row(
                           children: [
-                            ButtonWidgetWithIcon(
-                                borderColor: Colors.blue,
-                                borderRadius: 4,
-                                labelAndIconColor: Colors.blue,
-                                icon: Icons.keyboard_arrow_down_outlined,
-                                label: "Export",
-                                onTap: () {
-                                  print("Export click");
-                                }),
                             SizedBox(
                               width: ConstantsApp.defaultPadding / 2,
                             ),
                             ButtonWidgetSolid(
-                                label: "Nuevo Cliente",
+                                label: "Nueva Solicitud",
+                                icon: CupertinoIcons.add_circled,
                                 onTap: () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceDescriptionScreen()));
                                 },
