@@ -3,7 +3,7 @@ import 'package:front_sena/models/inventory_model.dart';
 import 'package:front_sena/Utils/constants_app.dart';
 
 class InventoryHttpService {
-  final String _url = ConstantsApp.webURL = "inventory/";
+  final String _url = ConstantsApp.webURL + "inventory/";
 
   Future<List<Inventory>> getAllItems() async {
     var uri = Uri.parse(_url + "items");
