@@ -16,6 +16,23 @@ class InventoryHttpService {
     }
   }
 
+  Future<String> createItem(Inventory inventory) async {
+    try {
+      var uri = Uri.parse(_url + "addItem");
+      var response = await http.post(uri,
+          headers: {"Content-Type": "application/json"},
+          body: itemToJson(inventory));
+      if (response.statusCode == 201) {
+        return "Se creo el item correctamente";
+      } else {
+        throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+      }
+    } catch (error) {
+      print("Error en create item: $error");
+      throw "Error inesperado";
+    }
+  }
+
   Future<String> deleteItemById(String itemId) async {
     try {
       var uri = Uri.parse(_url + "deleteItem/${itemId}");

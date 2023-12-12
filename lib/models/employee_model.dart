@@ -2,7 +2,9 @@ import 'dart:convert';
 
 List<Employee> employeeFromJson(String str) => List<Employee>.from(json.decode(str).map((x) => Employee.fromJson(x)));
 
-String employeeToJson(List<Employee> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String listEmployeeToJson(List<Employee> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+String employeeToJson(Employee data) => json.encode(data.toJson());
 
 enum EmployeeStatus { Activo, Vacaciones, Inactivo}
 
@@ -20,6 +22,13 @@ class Employee {
     required this.position,
     required this.state,
   });
+
+  Employee.create({
+    required this.name,
+    required this.phone,
+    required this.position,
+    required this.state,
+}) : employeeId = "";
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
     employeeId: json["employeeId"],

@@ -12,6 +12,11 @@ class InventoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void createItem(Inventory inventory) async {
+    responseString = await inventoryHttpService.createItem(inventory);
+    notifyListeners();
+  }
+
   void deleteItemById(String itemId) async {
     responseString = await inventoryHttpService.deleteItemById(itemId);
     notifyListeners();

@@ -16,6 +16,23 @@ class EmployeeHttpService {
     }
   }
 
+  Future<String> createEmployee(Employee employee) async {
+    try {
+      var uri = Uri.parse(_url + "addEmployee");
+      var response = await http.post(uri,
+          headers: {"Content-Type": "application/json"},
+          body: employeeToJson(employee));
+      if (response.statusCode == 201) {
+        return "Se creo el cliente correctamente";
+      } else {
+        throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+      }
+    } catch (error) {
+      print("Error en Create Cliente: $error");
+      throw "Error inesperado";
+    }
+  }
+
   Future<String> deleteEmployeeId(String employeeId) async {
     try {
       var uri = Uri.parse(_url + "deleteEmployee/${employeeId}");

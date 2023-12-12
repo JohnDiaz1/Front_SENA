@@ -68,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   VerticalSideNavigationMenu(
                     onTap: (int index){
-                      print(index);
                       setState(() {
                         currentIndex = index;
                       });

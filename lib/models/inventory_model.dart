@@ -6,7 +6,9 @@ import 'dart:convert';
 
 List<Inventory> inventoryFromJson(String str) => List<Inventory>.from(json.decode(str).map((x) => Inventory.fromJson(x)));
 
-String inventoryToJson(List<Inventory> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String listInventoryToJson(List<Inventory> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+String itemToJson(Inventory data) => json.encode(data.toJson());
 
 class Inventory {
   String inventoryId;
@@ -24,6 +26,14 @@ class Inventory {
     required this.precioCompra,
     required this.precioVenta,
   });
+
+  Inventory.create({
+    required this.name,
+    required this.description,
+    required this.stock,
+    required this.precioCompra,
+    required this.precioVenta,
+}) : inventoryId = "";
 
   factory Inventory.fromJson(Map<String, dynamic> json) => Inventory(
     inventoryId: json["inventoryId"],

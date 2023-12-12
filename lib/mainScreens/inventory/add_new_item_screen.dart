@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:front_sena/utils/constants_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:front_sena/provider/client_provider.dart';
-import 'package:front_sena/models/service_request_model.dart';
+import 'package:front_sena/provider/inventory_provider.dart';
 import 'package:front_sena/widgets/button_widget_solid.dart';
 import 'package:front_sena/widgets/app_header.dart';
-import 'package:front_sena/models/client_model.dart';
+import 'package:front_sena/models/inventory_model.dart';
 
 class AddNewItemScreen extends StatefulWidget {
   const AddNewItemScreen({super.key});
@@ -16,36 +15,25 @@ class AddNewItemScreen extends StatefulWidget {
 }
 
 class _AddNewItemScreenState extends State<AddNewItemScreen> {
-  late List<Client> clientList;
-  //Iterable<TableRow>? filteredServiceRequestList;
-  late ClientProvider clientProvider;
-  late String selectedValue;
-  late TextEditingController _identificationController;
-  late TextEditingController _nameController;
-  late TextEditingController _addressController;
-  late TextEditingController _phoneController;
-  late TextEditingController _emailController;
+  late InventoryProvider inventoryProvider;
+   TextEditingController _nameController = TextEditingController();
+   TextEditingController _descriptionController = TextEditingController();
+   TextEditingController _stockController = TextEditingController();
+   TextEditingController _precioCompraController = TextEditingController();
+   TextEditingController _precioVentaController = TextEditingController();
 
   @override
   void initState() {
-    clientProvider = Provider.of<ClientProvider>(context, listen: false);
-    clientProvider.getAllClient();
-    clientList = clientProvider.clientsModel;
-    selectedValue = clientList.first.name;
-    _identificationController = TextEditingController();
-    _nameController = TextEditingController();
-    _addressController = TextEditingController();
-    _phoneController = TextEditingController();
-    _emailController = TextEditingController();
+    inventoryProvider = Provider.of<InventoryProvider>(context, listen: false);
   }
 
   @override
   void dispose() {
-    _identificationController.dispose();
     _nameController.dispose();
-    _addressController.dispose();
-    _phoneController.dispose();
-    _emailController.dispose();
+    _descriptionController.dispose();
+    _stockController.dispose();
+    _precioCompraController.dispose();
+    _precioVentaController.dispose();
     super.dispose();
   }
 
@@ -84,7 +72,7 @@ class _AddNewItemScreenState extends State<AddNewItemScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
-                        controller: _identificationController,
+                        controller: _nameController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -106,7 +94,7 @@ class _AddNewItemScreenState extends State<AddNewItemScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
-                        controller: _nameController,
+                        controller: _descriptionController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -129,7 +117,7 @@ class _AddNewItemScreenState extends State<AddNewItemScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
-                        controller: _addressController,
+                        controller: _stockController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -151,7 +139,7 @@ class _AddNewItemScreenState extends State<AddNewItemScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
-                        controller: _phoneController,
+                        controller: _precioCompraController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -173,7 +161,7 @@ class _AddNewItemScreenState extends State<AddNewItemScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextField(
-                        controller: _emailController,
+                        controller: _precioVentaController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -194,14 +182,13 @@ class _AddNewItemScreenState extends State<AddNewItemScreen> {
                         child: ButtonWidgetSolid(
                           label: "Guardar",
                           onTap: () {
-                            clientProvider?.createClient(
-                                Client.create(
-                                    cedula: _identificationController.text,
-                                    name: _nameController.text,
-                                    address: _addressController.text,
-                                    phone: _phoneController.text,
-                                    email: _emailController.text
-                                ));
+                            inventoryProvider?.createItem(Inventory.create(
+                                name: _nameController.text,
+                                description: _descriptionController.text,
+                                stock: int.parse(_stockController.text),
+                                precioCompra: double.parse(_precioCompraController.text),
+                                precioVenta: double.parse(_precioVentaController.text)
+                            ));
                           },
                           solidColor: Colors.blue,
                           borderRadius: 4,

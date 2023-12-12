@@ -12,6 +12,11 @@ class EmployeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void createEmployee(Employee employee) async {
+    responseString = await employeeHttpService.createEmployee(employee);
+    notifyListeners();
+  }
+
   void deleteEmployeeById(String employeeId) async {
     responseString = await employeeHttpService.deleteEmployeeId(employeeId);
     notifyListeners();

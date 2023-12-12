@@ -8,7 +8,7 @@ import 'package:front_sena/models/employee_model.dart';
 import 'package:front_sena/widgets/pagination_widget.dart';
 import 'package:front_sena/widgets/button_widget_solid.dart';
 import 'package:front_sena/widgets/button_widget_popup.dart';
-import 'package:front_sena/MainScreens/ServiceRequest/service_description_screen.dart';
+import 'package:front_sena/mainScreens/employee/add_new_employee_screen.dart';
 
 class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({super.key});
@@ -130,7 +130,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                               label: "Nuevo Empleado",
                               icon: CupertinoIcons.add_circled,
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceDescriptionScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewEmployeeScreen()));
                               },
                               labelAndIconColor: Colors.white,
                               solidColor: Colors.blue,
