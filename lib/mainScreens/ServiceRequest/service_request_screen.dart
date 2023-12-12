@@ -4,7 +4,6 @@ import 'package:front_sena/MainScreens/Home/components/navigation_drawer.dart';
 import 'package:front_sena/provider/service_request_provider.dart';
 import 'package:front_sena/provider/client_provider.dart';
 import 'package:front_sena/models/client_model.dart';
-import 'package:front_sena/models/service_request_model.dart';
 
 class ServiceRequestScreen extends StatefulWidget {
   const ServiceRequestScreen({super.key});

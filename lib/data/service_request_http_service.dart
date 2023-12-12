@@ -3,7 +3,7 @@ import 'package:front_sena/models/service_request_model.dart';
 import 'package:front_sena/Utils/constants_app.dart';
 
 class ServiceRequestHttpService {
-  final String _url = ConstantsApp.webURL;
+  final String _url = ConstantsApp.webURL + "serviceRequest/";
 
   Future<List<ServiceRequest>> getAllServiceRequest() async {
     var uri = Uri.parse(_url + "requests");

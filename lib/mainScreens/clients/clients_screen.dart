@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:front_sena/utils/constants_app.dart';
-import 'package:front_sena/provider/inventory_provider.dart';
-import 'package:front_sena/models/inventory_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:front_sena/widgets/button_widget_popup.dart';
-import 'package:front_sena/widgets/button_widget_solid.dart';
 import 'package:front_sena/widgets/button_widget_icon.dart';
+import 'package:front_sena/provider/client_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:front_sena/models/client_model.dart';
 import 'package:front_sena/widgets/pagination_widget.dart';
+import 'package:front_sena/widgets/button_widget_solid.dart';
+import 'package:front_sena/widgets/button_widget_popup.dart';
+import 'package:front_sena/MainScreens/clients/add_new_client_screen.dart';
 
-class InventoryScreen extends StatefulWidget {
-  const InventoryScreen({super.key});
+class ClientsScreen extends StatefulWidget {
+  const ClientsScreen({super.key});
 
   @override
-  State<InventoryScreen> createState() => _InventoryScreenState();
+  State<ClientsScreen> createState() => _ClientsScreenState();
 }
 
-class _InventoryScreenState extends State<InventoryScreen> {
-  Iterable<TableRow>? inventoryList;
+class _ClientsScreenState extends State<ClientsScreen> {
+  Iterable<TableRow>? clientList;
   late Iterable<TableRow> filteredServiceRequestList;
-  InventoryProvider? provider;
+  ClientProvider? provider;
 
-  //Provider
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
-        provider = Provider.of<InventoryProvider>(context, listen: false);
-        provider?.getAllItems();
-        inventoryList = provider?.inventoryModel
-            .map((item) => _buildServiceRowTile(item));
+        provider = Provider.of<ClientProvider>(context, listen: false);
+        provider?.getAllClient();
+        clientList = provider?.clientsModel
+            .map((client) => _buildServiceRowTile(client));
       });
     });
   }
@@ -92,12 +92,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                       onChanged: (searchTerm) {
                                         if (searchTerm.isEmpty) {
                                           setState(() {
-                                            inventoryList = provider?.inventoryModel
+                                            clientList = provider?.clientsModel
                                                 .map((element) => _buildServiceRowTile(element));
                                           });
                                         } else {
                                           setState(() {
-                                            inventoryList = provider?.inventoryModel
+                                            clientList = provider?.clientsModel
                                                 .where((element) =>
                                                 element.name.toLowerCase().contains(searchTerm.toLowerCase()))
                                                 .map((element) => _buildServiceRowTile(element));
@@ -127,10 +127,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
                               width: ConstantsApp.defaultPadding / 2,
                             ),
                             ButtonWidgetSolid(
-                              label: "Nuevo Item",
+                              label: "Nuevo Cliente",
                               icon: CupertinoIcons.add_circled,
                               onTap: () {
-                                //Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceDescriptionScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewClientScreen()));
                               },
                               labelAndIconColor: Colors.white,
                               solidColor: Colors.blue,
@@ -157,7 +157,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     ),
                     children: [
                       _buildServiceHeader(),
-                      ...?inventoryList,
+                      ...?clientList,
                     ],
                   ),
                 ],
@@ -178,8 +178,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
     );
   }
 
-  TableRow _buildServiceRowTile(Inventory item) {
-    return TableRow(key: ValueKey(item.inventoryId), children: [
+  TableRow _buildServiceRowTile(Client client) {
+    return TableRow(key: ValueKey(client.clientId), children: [
       _buildServiceItem(
           child: Checkbox(
             value: false,
@@ -194,7 +194,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           child: Padding(
             padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
             child: Text(
-              item.name,
+              client.name,
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -205,7 +205,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           child: Padding(
             padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
             child: Text(
-              item.description,
+              client.cedula,
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -216,7 +216,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           child: Padding(
             padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
             child: Text(
-              item.precioCompra.toString(),
+              client.phone,
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
@@ -227,33 +227,11 @@ class _InventoryScreenState extends State<InventoryScreen> {
           child: Padding(
             padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
             child: Text(
-              item.precioVenta.toString(),
+              client.email,
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
                   ?.copyWith(color: Colors.black87.withOpacity(.7)),
-            ),
-          )),
-      _buildServiceItem(
-          child: Padding(
-            padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
-            child: Container(
-              height: 35,
-              width: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                color: inventoryStockColor(item.stock),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Center(
-                child: Text(
-                  item.stock.toString(),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.black87.withOpacity(.7),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
             ),
           )),
       TableCell(
@@ -276,9 +254,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     iconColor: Colors.red,
                     text: "Eliminar",
                     onTap: () {
-                      // Lógica para la opción "Eliminar"
                       setState(() {
-                        provider?.deleteItemById(item.inventoryId.toString());
+                        provider?.deleteClientById(client.clientId.toString());
                       });
                     },
                   ),
@@ -321,19 +298,15 @@ class _InventoryScreenState extends State<InventoryScreen> {
       _buildServiceItem(
           child: Padding(
               padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
-              child: Text("Descripcion"))),
+              child: Text("Cedula"))),
       _buildServiceItem(
           child: Padding(
               padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
-              child: Text("Precio Compra"))),
+              child: Text("Telefono"))),
       _buildServiceItem(
           child: Padding(
               padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
-              child: Text("Precio Venta"))),
-      _buildServiceItem(
-          child: Padding(
-              padding: EdgeInsets.all(ConstantsApp.defaultPadding / 2),
-              child: Text("Stock"))),
+              child: Text("Correo"))),
       _buildServiceItem(child: Container()),
     ]);
   }
@@ -348,18 +321,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
         ),
       ),
     );
-  }
-
-  inventoryStockColor(int stock) {
-    if (stock >= 0 && stock <= 15) {
-      return Colors.red.withOpacity(0.3);
-    } else if (stock > 15 && stock <= 45) {
-      return Colors.yellow.withOpacity(0.3);
-    } else if (stock > 45) {
-      return Colors.green.withOpacity(0.3);
-    } else {
-      return Colors.grey.withOpacity(0.3);
-    }
   }
 
 }

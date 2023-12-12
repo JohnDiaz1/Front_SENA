@@ -3,7 +3,7 @@ import 'package:front_sena/models/employee_model.dart';
 import 'package:front_sena/utils/constants_app.dart';
 
 class EmployeeHttpService {
-  final String _url = ConstantsApp.webURL;
+  final String _url = ConstantsApp.webURL + "employee/";
 
   Future<List<Employee>> getAllEmployees() async {
     var uri = Uri.parse(_url + "employees");

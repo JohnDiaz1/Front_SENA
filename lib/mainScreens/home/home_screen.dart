@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:front_sena/provider/client_provider.dart';
-import 'package:front_sena/models/client_model.dart';
 import 'package:front_sena/widgets/app_header.dart';
 import 'package:front_sena/widgets/vertical_side_navigation.dart';
 import 'package:front_sena/MainScreens/ServiceRequest/service_description_screen.dart';

@@ -12,6 +12,11 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void createClient(Client client) async {
+    responseString = await clientHttpService.createClient(client);
+    notifyListeners();
+  }
+
   void deleteClientById(String clientId) async {
   responseString = await clientHttpService.deleteClientById(clientId);
   notifyListeners();

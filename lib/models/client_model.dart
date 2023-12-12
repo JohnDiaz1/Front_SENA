@@ -6,7 +6,9 @@ import 'dart:convert';
 
 List<Client> clientFromJson(String str) => List<Client>.from(json.decode(str).map((x) => Client.fromJson(x)));
 
-String clientToJson(List<Client> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String listClientToJson(List<Client> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+String clientToJson(Client data) => json.encode(data.toJson());
 
 class Client {
   String clientId;
@@ -24,6 +26,14 @@ class Client {
     required this.phone,
     required this.email,
   });
+
+  Client.create({
+    required this.cedula,
+    required this.name,
+    required this.address,
+    required this.phone,
+    required this.email,
+}) : clientId = "";
 
   factory Client.fromJson(Map<String, dynamic> json) => Client(
     clientId: json["clientId"],
