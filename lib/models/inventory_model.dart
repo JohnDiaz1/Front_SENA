@@ -8,7 +8,7 @@ List<Inventory> inventoryFromJson(String str) => List<Inventory>.from(json.decod
 
 String listInventoryToJson(List<Inventory> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-String itemToJson(Inventory data) => json.encode(data.toJson());
+String inventoryToJson(Inventory data) => json.encode(data.toJson());
 
 class Inventory {
   String inventoryId;

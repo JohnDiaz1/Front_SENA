@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_sena/utils/constants_app.dart';
+import 'package:front_sena/widgets/app_header_back.dart';
 import 'package:front_sena/widgets/button_widget_solid.dart';
 import 'package:front_sena/widgets/app_header.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,7 @@ class _ServiceDescriptionScreenState extends State<ServiceDescriptionScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppHeader(),
+          AppHeaderBack(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(ConstantsApp.defaultPadding),

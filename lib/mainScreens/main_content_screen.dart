@@ -27,16 +27,21 @@ class _MainContentState extends State<MainContent> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
         clientProvider = Provider.of<ClientProvider>(context, listen: false);
-        clientProvider?.getAllClient();
         provider = Provider.of<ServiceRequestProvider>(context, listen: false);
-        provider?.getAllServiceRequests();
+        _loadMainData();
+  }
+
+  Future<void> _loadMainData() async {
+    await clientProvider?.getAllClient();
+    await provider?.getAllServiceRequests();
+    if (mounted) {
+      setState(() {
         serviceRequestList = provider?.servicesModel
-            .map((service) => _buildServiceRowTile(service));
+            .map((item) => _buildServiceRowTile(item));
       });
-    });
+    }
+    throw Exception("No");
   }
 
   @override
@@ -58,7 +63,9 @@ class _MainContentState extends State<MainContent> {
                 left: ConstantsApp.defaultPadding,
                 right: ConstantsApp.defaultPadding * 2,
                 bottom: ConstantsApp.defaultPadding * 3),
-            child: SingleChildScrollView(
+            child: serviceRequestList == null ? Center(
+              child: CircularProgressIndicator(),
+            ) : SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
@@ -71,7 +78,7 @@ class _MainContentState extends State<MainContent> {
                           height: 40,
                           decoration: BoxDecoration(
                               color:
-                                  ConstantsApp.backgroundColor.withOpacity(.5),
+                              ConstantsApp.backgroundColor.withOpacity(.5),
                               shape: BoxShape.rectangle,
                               border: Border.all(
                                   color: Colors.grey.withOpacity(.4),
@@ -131,11 +138,11 @@ class _MainContentState extends State<MainContent> {
                               width: ConstantsApp.defaultPadding / 2,
                             ),
                             ButtonWidgetSolid(
-                                label: "Nueva Solicitud",
-                                icon: CupertinoIcons.add_circled,
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceDescriptionScreen()));
-                                },
+                              label: "Nueva Solicitud",
+                              icon: CupertinoIcons.add_circled,
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceDescriptionScreen()));
+                              },
                               labelAndIconColor: Colors.white,
                               solidColor: Colors.blue,
                               borderRadius: 4,

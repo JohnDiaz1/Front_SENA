@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:front_sena/models/client_model.dart';
 import 'package:front_sena/utils/constants_app.dart';
@@ -10,7 +12,18 @@ class ClientHttpService {
     var response = await http.get(uri);
 
     if (response.statusCode == 200) {
-      return clientFromJson(response.body);
+      return listClientFromJson(response.body);
+    } else {
+      throw ("Error al obtener api");
+    }
+  }
+
+  Future<Client> getClientById(String clientId) async {
+    var uri = Uri.parse(_url + "getClientById/$clientId");
+    var response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      return Client.fromJson(json.decode(response.body));
     } else {
       throw ("Error al obtener api");
     }
@@ -33,25 +46,20 @@ class ClientHttpService {
     }
   }
 
-  Future<List<Client>> updateClientById(String cedula) async {
-    var uri = Uri.parse(_url + "client/$cedula");
-    var response = await http.get(uri);
-
-    if (response.statusCode == 200) {
-      return clientFromJson(response.body);
-    } else {
-      throw ("Error al obtener api");
-    }
-  }
-
-  Future<List<Client>> getClientById(String cedula) async {
-    var uri = Uri.parse(_url + "client/$cedula");
-    var response = await http.get(uri);
-
-    if (response.statusCode == 200) {
-      return clientFromJson(response.body);
-    } else {
-      throw ("Error al obtener api");
+  Future<String> updateClient(Client client) async {
+    try {
+      var uri = Uri.parse(_url + "updateClient");
+      var response = await http.put(uri,
+          headers: {"Content-Type": "application/json"},
+          body: clientToJson(client));
+      if (response.statusCode == 201) {
+        return "Se creo el cliente correctamente";
+      } else {
+        throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+      }
+    } catch (error) {
+      print("Error en Create Cliente: $error");
+      throw "Error inesperado";
     }
   }
 

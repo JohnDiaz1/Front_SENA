@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_sena/mainScreens/clients/update_client_screen.dart';
 import 'package:front_sena/utils/constants_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:front_sena/widgets/button_widget_icon.dart';
@@ -9,6 +10,7 @@ import 'package:front_sena/widgets/pagination_widget.dart';
 import 'package:front_sena/widgets/button_widget_solid.dart';
 import 'package:front_sena/widgets/button_widget_popup.dart';
 import 'package:front_sena/MainScreens/clients/add_new_client_screen.dart';
+import 'package:front_sena/mainScreens/clients/update_client_screen.dart';
 
 class ClientsScreen extends StatefulWidget {
   const ClientsScreen({super.key});
@@ -25,14 +27,19 @@ class _ClientsScreenState extends State<ClientsScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
         provider = Provider.of<ClientProvider>(context, listen: false);
-        provider?.getAllClient();
+        _loadClientData();
+  }
+
+  Future<void> _loadClientData() async {
+    await provider?.getAllClient();
+    if (mounted) {
+      setState(() {
         clientList = provider?.clientsModel
-            .map((client) => _buildServiceRowTile(client));
+            .map((item) => _buildServiceRowTile(item));
       });
-    });
+    }
+    throw Exception("No");
   }
 
   @override
@@ -54,7 +61,9 @@ class _ClientsScreenState extends State<ClientsScreen> {
                 left: ConstantsApp.defaultPadding,
                 right: ConstantsApp.defaultPadding * 2,
                 bottom: ConstantsApp.defaultPadding * 3),
-            child: SingleChildScrollView(
+            child: clientList == null ? Center(
+              child: CircularProgressIndicator(),
+            ) : SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
@@ -246,7 +255,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     iconColor: Colors.blue,
                     text: "Editar",
                     onTap: () {
-                      // Lógica para la opción "Editar"
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateClientScreen(clientId: client.clientId,)));
                     },
                   ),
                   PopupMenuItemData(
@@ -255,7 +264,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     text: "Eliminar",
                     onTap: () {
                       setState(() {
-                        provider?.deleteClientById(client.clientId.toString());
+                        provider?.deleteClientById(client.clientId);
                       });
                     },
                   ),

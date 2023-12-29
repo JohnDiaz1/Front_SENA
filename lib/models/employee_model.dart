@@ -35,7 +35,7 @@ class Employee {
     name: json["name"],
     phone: json["phone"],
     position: json["position"],
-    state: _parseEmployeeStateToString(json["state"]),
+    state: parseEmployeeStateToString(json["state"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -43,10 +43,10 @@ class Employee {
     "name": name,
     "phone": phone,
     "position": position,
-    "state": _parseStringToEmployeeState(state),
+    "state": parseStringToEmployeeState(state),
   };
 
-  static EmployeeStatus _parseEmployeeStateToString(dynamic state) {
+  static EmployeeStatus parseEmployeeStateToString(dynamic state) {
     switch (state) {
       case "Activo":
         return EmployeeStatus.Activo;
@@ -59,7 +59,7 @@ class Employee {
     }
   }
 
-  static String _parseStringToEmployeeState(dynamic state) {
+  static String parseStringToEmployeeState(dynamic state) {
     switch (state) {
       case EmployeeStatus.Activo:
         return "Activo";

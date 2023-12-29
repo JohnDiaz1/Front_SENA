@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_sena/mainScreens/inventory/update_item_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:front_sena/utils/constants_app.dart';
 import 'package:front_sena/provider/inventory_provider.dart';
@@ -20,20 +21,25 @@ class InventoryScreen extends StatefulWidget {
 class _InventoryScreenState extends State<InventoryScreen> {
   Iterable<TableRow>? inventoryList;
   late Iterable<TableRow> filteredServiceRequestList;
-  InventoryProvider? provider;
+  late InventoryProvider provider;
 
   //Provider
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      provider = Provider.of<InventoryProvider>(context, listen: false);
+      _loadInventoryData();
+  }
+
+  Future<void> _loadInventoryData() async {
+    await provider.getAllItems();
+    if (mounted) {
       setState(() {
-        provider = Provider.of<InventoryProvider>(context, listen: false);
-        provider?.getAllItems();
-        inventoryList = provider?.inventoryModel
+        inventoryList = provider.inventoryModel
             .map((item) => _buildServiceRowTile(item));
       });
-    });
+    }
+    throw Exception("No");
   }
 
   @override
@@ -55,7 +61,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 left: ConstantsApp.defaultPadding,
                 right: ConstantsApp.defaultPadding * 2,
                 bottom: ConstantsApp.defaultPadding * 3),
-            child: SingleChildScrollView(
+            child: inventoryList == null ?
+            Center(
+              child: CircularProgressIndicator(),
+            ) : SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
@@ -93,12 +102,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                       onChanged: (searchTerm) {
                                         if (searchTerm.isEmpty) {
                                           setState(() {
-                                            inventoryList = provider?.inventoryModel
+                                            inventoryList = provider.inventoryModel
                                                 .map((element) => _buildServiceRowTile(element));
                                           });
                                         } else {
                                           setState(() {
-                                            inventoryList = provider?.inventoryModel
+                                            inventoryList = provider.inventoryModel
                                                 .where((element) =>
                                                 element.name.toLowerCase().contains(searchTerm.toLowerCase()))
                                                 .map((element) => _buildServiceRowTile(element));
@@ -269,7 +278,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     iconColor: Colors.blue,
                     text: "Editar",
                     onTap: () {
-                      // Lógica para la opción "Editar"
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateItemScreen(itemId: item.inventoryId)));
                     },
                   ),
                   PopupMenuItemData(
@@ -279,7 +288,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     onTap: () {
                       // Lógica para la opción "Eliminar"
                       setState(() {
-                        provider?.deleteItemById(item.inventoryId.toString());
+                        provider.deleteItemById(item.inventoryId.toString());
                       });
                     },
                   ),

@@ -4,16 +4,27 @@ import 'package:front_sena/models/client_model.dart';
 
 class ClientProvider extends ChangeNotifier {
   List<Client> clientsModel = [];
+  Client? clientModel;
   ClientHttpService clientHttpService = ClientHttpService();
   String responseString = "";
 
-  void getAllClient() async {
+  Future<void> getAllClient() async {
     clientsModel = await clientHttpService.getAllClients();
+    notifyListeners();
+  }
+
+  Future<void> getClientById(String clientId) async {
+    clientModel = await clientHttpService.getClientById(clientId);
     notifyListeners();
   }
 
   void createClient(Client client) async {
     responseString = await clientHttpService.createClient(client);
+    notifyListeners();
+  }
+
+  void updateClient(Client client) async {
+    responseString = await clientHttpService.updateClient(client);
     notifyListeners();
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_sena/mainScreens/employee/update_employee_screen.dart';
 import 'package:front_sena/utils/constants_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:front_sena/widgets/button_widget_icon.dart';
@@ -25,14 +26,19 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
         provider = Provider.of<EmployeeProvider>(context, listen: false);
-        provider?.getAllEmployees();
-        employeeList = provider?.employeeModel
-            .map((client) => _buildServiceRowTile(client));
+        _loadEmployeeData();
+  }
+
+  Future<void> _loadEmployeeData() async {
+    await provider?.getAllEmployees();
+    if (mounted) {
+      setState(() {
+        employeeList = provider?.employeesModel
+            .map((employee) => _buildServiceRowTile(employee));
       });
-    });
+    }
+    throw Exception("No");
   }
 
   @override
@@ -54,7 +60,10 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                 left: ConstantsApp.defaultPadding,
                 right: ConstantsApp.defaultPadding * 2,
                 bottom: ConstantsApp.defaultPadding * 3),
-            child: SingleChildScrollView(
+            child: employeeList == null ?
+            Center(
+              child: CircularProgressIndicator(),
+            ) : SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
@@ -92,12 +101,12 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                       onChanged: (searchTerm) {
                                         if (searchTerm.isEmpty) {
                                           setState(() {
-                                            employeeList = provider?.employeeModel
+                                            employeeList = provider?.employeesModel
                                                 .map((element) => _buildServiceRowTile(element));
                                           });
                                         } else {
                                           setState(() {
-                                            employeeList = provider?.employeeModel
+                                            employeeList = provider?.employeesModel
                                                 .where((element) =>
                                                 element.name.toLowerCase().contains(searchTerm.toLowerCase()))
                                                 .map((element) => _buildServiceRowTile(element));
@@ -257,7 +266,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                     iconColor: Colors.blue,
                     text: "Editar",
                     onTap: () {
-                      // Lógica para la opción "Editar"
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateEmployeeScreen(employeeId: employee.employeeId)));
                     },
                   ),
                   PopupMenuItemData(

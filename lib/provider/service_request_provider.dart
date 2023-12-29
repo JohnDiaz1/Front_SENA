@@ -7,7 +7,7 @@ class ServiceRequestProvider extends ChangeNotifier {
   ServiceRequestHttpService serviceHttpService = ServiceRequestHttpService();
   String responseString = "";
 
-  void getAllServiceRequests() async {
+  Future<void> getAllServiceRequests() async {
     servicesModel = await serviceHttpService.getAllServiceRequest();
     notifyListeners();
   }

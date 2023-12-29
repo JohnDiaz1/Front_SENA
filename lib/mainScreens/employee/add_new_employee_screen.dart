@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_sena/utils/constants_app.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:front_sena/widgets/app_header_back.dart';
 import 'package:provider/provider.dart';
 import 'package:front_sena/provider/employee_provider.dart';
 import 'package:front_sena/widgets/button_widget_solid.dart';
@@ -40,7 +41,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
       backgroundColor: Colors.grey,
       body: Column(
         children: [
-          AppHeader(),
+          AppHeaderBack(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(ConstantsApp.defaultPadding),
@@ -135,7 +136,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                         child: ButtonWidgetSolid(
                           label: "Guardar",
                           onTap: () {
-                            employeeProvider?.createEmployee(Employee.create(
+                            employeeProvider.createEmployee(Employee.create(
                                 name: _nameController.text,
                                 phone: _phoneController.text,
                                 position: _positionController.text,

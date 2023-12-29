@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_sena/utils/constants_app.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:front_sena/widgets/app_header_back.dart';
 import 'package:provider/provider.dart';
 import 'package:front_sena/provider/inventory_provider.dart';
 import 'package:front_sena/widgets/button_widget_solid.dart';
@@ -43,7 +44,7 @@ class _AddNewItemScreenState extends State<AddNewItemScreen> {
       backgroundColor: Colors.grey,
       body: Column(
         children: [
-          AppHeader(),
+          AppHeaderBack(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(ConstantsApp.defaultPadding),
