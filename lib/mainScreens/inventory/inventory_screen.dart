@@ -154,8 +154,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   Table(
                     columnWidths: {
                       0: FixedColumnWidth(30),
-                      1: FixedColumnWidth(500),
-                      2: FixedColumnWidth(400)
+                      1: FixedColumnWidth(150),
+                      2: FixedColumnWidth(400),
+                      3: FixedColumnWidth(150),
+                      4: FixedColumnWidth(150)
                     },
                     border: TableBorder(
                       top: BorderSide(

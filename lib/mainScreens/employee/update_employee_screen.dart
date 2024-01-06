@@ -189,8 +189,8 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
                   Container(
                     child: ButtonWidgetSolid(
                       label: "Guardar",
-                      onTap: () {
-                        employeeProvider.updateEmployee(
+                      onTap: () async {
+                       bool response = await employeeProvider.updateEmployee(
                             Employee(
                                 employeeId: employeeProvider.employeeModel!.employeeId,
                                 name: _nameController.text,
@@ -198,6 +198,17 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
                                 position: _positionController.text,
                                 state: Employee.parseEmployeeStateToString(selectedValue)
                             ));
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(
+                           content: Text(
+                             response
+                                 ? '¡Empleado actualizado exitosamente!'
+                                 : 'Error al actualizar el empleado',
+                             style: TextStyle(color: Colors.white),
+                           ),
+                           backgroundColor: response ? Colors.green : Colors.red,
+                         ),
+                       );
                       },
                       solidColor: Colors.blue,
                       borderRadius: 4,

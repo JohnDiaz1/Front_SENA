@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:http/http.dart' as http;
 import 'package:front_sena/models/employee_model.dart';
@@ -46,19 +47,18 @@ class EmployeeHttpService {
     }
   }
 
-  Future<String> updateEmployee(Employee employee) async {
+  Future<bool> updateEmployee(Employee employee) async {
     try {
       var uri = Uri.parse(_url + "updateEmployee");
       var response = await http.put(uri,
           headers: {"Content-Type": "application/json"},
           body: employeeToJson(employee));
-      if (response.statusCode == 201) {
-        return "Se creo el cliente correctamente";
+      if (response.statusCode == 200) {
+        return true; //"Se actualizo la informacion del empleado correctamente";
       } else {
-        throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+        return false; //"Error al actualizar informacion del empleado";
       }
     } catch (error) {
-      print("Error en Create Cliente: $error");
       throw "Error inesperado";
     }
   }

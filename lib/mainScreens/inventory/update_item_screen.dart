@@ -206,8 +206,8 @@ class _UpdateItemScreenState extends State<UpdateItemScreen> {
                   Container(
                     child: ButtonWidgetSolid(
                       label: "Guardar",
-                      onTap: () {
-                        inventoryProvider.updateItem(
+                      onTap: () async {
+                        bool response = await inventoryProvider.updateItem(
                             Inventory(
                                 inventoryId: inventoryProvider.itemModel!.inventoryId ,
                                 name: _nameController.text,
@@ -216,6 +216,17 @@ class _UpdateItemScreenState extends State<UpdateItemScreen> {
                                 precioCompra: double.parse(_precioCompraController.text),
                                 precioVenta: double.parse(_precioVentaController.text)
                             ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              response
+                                  ? '¡Item actualizado exitosamente!'
+                                  : 'Error al actualizar la informacion del item',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: response ? Colors.green : Colors.red,
+                          ),
+                        );
                       },
                       solidColor: Colors.blue,
                       borderRadius: 4,

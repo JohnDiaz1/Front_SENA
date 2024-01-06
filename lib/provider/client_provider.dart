@@ -7,6 +7,7 @@ class ClientProvider extends ChangeNotifier {
   Client? clientModel;
   ClientHttpService clientHttpService = ClientHttpService();
   String responseString = "";
+  bool response = false;
 
   Future<void> getAllClient() async {
     clientsModel = await clientHttpService.getAllClients();
@@ -23,9 +24,10 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateClient(Client client) async {
-    responseString = await clientHttpService.updateClient(client);
+  Future<bool> updateClient(Client client) async {
+    response = await clientHttpService.updateClient(client);
     notifyListeners();
+    return response;
   }
 
   void deleteClientById(String clientId) async {

@@ -7,6 +7,7 @@ class EmployeeProvider extends ChangeNotifier {
   Employee? employeeModel;
   EmployeeHttpService employeeHttpService = EmployeeHttpService();
   String responseString = "";
+  bool response = false;
 
   Future<void> getAllEmployees() async {
     employeesModel = await employeeHttpService.getAllEmployees();
@@ -23,9 +24,10 @@ class EmployeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateEmployee(Employee employee) async {
-    responseString = await employeeHttpService.updateEmployee(employee);
+  Future<bool> updateEmployee(Employee employee) async {
+    response = await employeeHttpService.updateEmployee(employee);
     notifyListeners();
+    return response;
   }
 
   void deleteEmployeeById(String employeeId) async {

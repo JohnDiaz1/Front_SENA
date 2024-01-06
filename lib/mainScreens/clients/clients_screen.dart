@@ -153,8 +153,10 @@ class _ClientsScreenState extends State<ClientsScreen> {
                   Table(
                     columnWidths: {
                       0: FixedColumnWidth(30),
-                      1: FixedColumnWidth(500),
-                      2: FixedColumnWidth(400)
+                      1: FixedColumnWidth(400),
+                      2: FixedColumnWidth(150),
+                      3: FixedColumnWidth(200),
+                      4: FixedColumnWidth(300)
                     },
                     border: TableBorder(
                       top: BorderSide(

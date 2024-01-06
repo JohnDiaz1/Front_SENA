@@ -207,8 +207,8 @@ class _UpdateClientScreenState extends State<UpdateClientScreen> {
                   Container(
                     child: ButtonWidgetSolid(
                       label: "Guardar",
-                      onTap: () {
-                        clientProvider.updateClient(
+                      onTap: () async {
+                        bool response = await clientProvider.updateClient(
                             Client(
                                 clientId: clientProvider.clientModel!.clientId,
                                 cedula: _identificationController.text,
@@ -217,6 +217,17 @@ class _UpdateClientScreenState extends State<UpdateClientScreen> {
                                 phone: _phoneController.text,
                                 email: _emailController.text
                             ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              response
+                                  ? '¡Cliente actualizado exitosamente!'
+                                  : 'Error al actualizar informacion del cliente',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: response ? Colors.green : Colors.red,
+                          ),
+                        );
                       },
                       solidColor: Colors.blue,
                       borderRadius: 4,

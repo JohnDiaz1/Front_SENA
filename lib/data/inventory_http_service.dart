@@ -46,19 +46,18 @@ class InventoryHttpService {
     }
   }
 
-  Future<String> updateItem(Inventory item) async {
+  Future<bool> updateItem(Inventory item) async {
     try {
       var uri = Uri.parse(_url + "updateItem");
       var response = await http.put(uri,
           headers: {"Content-Type": "application/json"},
           body: inventoryToJson(item));
-      if (response.statusCode == 201) {
-        return "Se Actualizo el item correctamente";
+      if (response.statusCode == 200) {
+        return true; //"Se actualizo la informacion del empleado correctamente";
       } else {
-        throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+        return false; //"Error al actualizar informacion del empleado";
       }
     } catch (error) {
-      print("Error en Create Cliente: $error");
       throw "Error inesperado";
     }
   }

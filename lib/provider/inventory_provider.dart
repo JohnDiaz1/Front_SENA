@@ -7,6 +7,7 @@ class InventoryProvider extends ChangeNotifier {
   Inventory? itemModel;
   InventoryHttpService inventoryHttpService = InventoryHttpService();
   String responseString = "";
+  bool response = false;
 
   Future<void> getAllItems() async {
     inventoryModel = await inventoryHttpService.getAllItems();
@@ -23,9 +24,10 @@ class InventoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateItem(Inventory inventory) async {
-    responseString = await inventoryHttpService.updateItem(inventory);
+  Future<bool> updateItem(Inventory inventory) async {
+    response = await inventoryHttpService.updateItem(inventory);
     notifyListeners();
+    return response;
   }
 
   void deleteItemById(String itemId) async {

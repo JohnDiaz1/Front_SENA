@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 List<ServiceRequest> serviceRequestFromJson(String str) => List<ServiceRequest>.from(json.decode(str).map((x) => ServiceRequest.fromJson(x)));
 
 String serviceRequestListToJson(List<ServiceRequest> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -38,7 +40,7 @@ class ServiceRequest {
     requestId: json["requestId"],
     clientId: json["clientId"],
     description: json["description"],
-    requestDate: DateTime.parse(json["requestDate"]),
+    requestDate: _parseDateString(json["requestDate"]),
     state: _parseServiceRequestStateToString(json["state"]),
   );
 
@@ -48,6 +50,21 @@ class ServiceRequest {
     "requestDate": requestDate.toIso8601String(),
     "state": _parseStringToServiceRequestState(state),
   };
+
+  // Método para parsear la fecha
+  static DateTime _parseDateString(String dateString) {
+    try {
+      return DateFormat("yyyy-MM-dd").parse(dateString);
+    } catch (e) {
+      // En caso de error al parsear la fecha, puedes manejarlo de acuerdo a tus necesidades
+      print("Error al parsear la fecha: $e");
+      return DateTime.now(); // Otra opción podría ser devolver la fecha actual
+    }
+  }
+
+  String getFormattedDate() {
+    return DateFormat("yyyy-MM-dd").format(requestDate);
+  }
 
   static ServiceRequestState _parseServiceRequestStateToString(dynamic state) {
     switch (state) {
