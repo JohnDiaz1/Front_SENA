@@ -22,7 +22,7 @@ class ClientsScreen extends StatefulWidget {
 class _ClientsScreenState extends State<ClientsScreen> {
   Iterable<TableRow>? clientList;
   late Iterable<TableRow> filteredServiceRequestList;
-  ClientProvider? provider;
+  late ClientProvider provider;
 
   @override
   void initState() {
@@ -139,7 +139,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                               label: "Nuevo Cliente",
                               icon: CupertinoIcons.add_circled,
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewClientScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewClientScreen())).then((_) => _loadClientData());
                               },
                               labelAndIconColor: Colors.white,
                               solidColor: Colors.blue,
@@ -257,7 +257,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     iconColor: Colors.blue,
                     text: "Editar",
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateClientScreen(clientId: client.clientId,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateClientScreen(clientId: client.clientId))).then((_) => _loadClientData());
                     },
                   ),
                   PopupMenuItemData(
@@ -265,8 +265,20 @@ class _ClientsScreenState extends State<ClientsScreen> {
                     iconColor: Colors.red,
                     text: "Eliminar",
                     onTap: () {
-                      setState(() {
-                        provider?.deleteClientById(client.clientId);
+                      setState(() async {
+                        bool response = await provider.deleteClientById(client.clientId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              response
+                                  ? '¡Cliente eliminado exitosamente!'
+                                  : 'Error al eliminar el cliente, asegurese que el cliente no tenga ninguna orden activa',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: response ? Colors.green : Colors.red,
+                          ),
+                        );
+                        _loadClientData();
                       });
                     },
                   ),

@@ -198,8 +198,8 @@ class _AddNewClientScreen extends State<AddNewClientScreen> {
                         Expanded(
                           child: ButtonWidgetSolid(
                             label: "Guardar",
-                            onTap: () {
-                              clientProvider.createClient(
+                            onTap: () async {
+                              bool response = await clientProvider.createClient(
                                   Client.create(
                                       cedula: _identificationController.text,
                                       name: _nameController.text,
@@ -207,6 +207,17 @@ class _AddNewClientScreen extends State<AddNewClientScreen> {
                                       phone: _phoneController.text,
                                       email: _emailController.text
                                   ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    response
+                                        ? '¡Cliente creado exitosamente!'
+                                        : 'Error al crear el cliente',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  backgroundColor: response ? Colors.green : Colors.red,
+                                ),
+                              );
                             },
                             solidColor: Colors.blue,
                             borderRadius: 4,
