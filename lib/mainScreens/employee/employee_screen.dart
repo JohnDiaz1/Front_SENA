@@ -21,7 +21,7 @@ class EmployeeScreen extends StatefulWidget {
 class _EmployeeScreenState extends State<EmployeeScreen> {
   Iterable<TableRow>? employeeList;
   late Iterable<TableRow> filteredServiceRequestList;
-  EmployeeProvider? provider;
+  late EmployeeProvider provider;
 
   @override
   void initState() {
@@ -31,10 +31,10 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
   }
 
   Future<void> _loadEmployeeData() async {
-    await provider?.getAllEmployees();
+    await provider.getAllEmployees();
     if (mounted) {
       setState(() {
-        employeeList = provider?.employeesModel
+        employeeList = provider.employeesModel
             .map((employee) => _buildServiceRowTile(employee));
       });
     }
@@ -139,7 +139,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                               label: "Nuevo Empleado",
                               icon: CupertinoIcons.add_circled,
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewEmployeeScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewEmployeeScreen())).then((_) => _loadEmployeeData());
                               },
                               labelAndIconColor: Colors.white,
                               solidColor: Colors.blue,
@@ -266,7 +266,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                     iconColor: Colors.blue,
                     text: "Editar",
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateEmployeeScreen(employeeId: employee.employeeId)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateEmployeeScreen(employeeId: employee.employeeId))).then((_) => _loadEmployeeData());
                     },
                   ),
                   PopupMenuItemData(
@@ -274,8 +274,20 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                     iconColor: Colors.red,
                     text: "Eliminar",
                     onTap: () {
-                      setState(() {
-                        provider?.deleteEmployeeById(employee.employeeId);
+                      setState(() async {
+                        bool response = await provider.deleteEmployeeById(employee.employeeId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              response
+                                  ? '¡Empleado eliminado exitosamente!'
+                                  : 'Error al eliminar el empleado',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: response ? Colors.green : Colors.red,
+                          ),
+                        );
+                        _loadEmployeeData();
                       });
                     },
                   ),

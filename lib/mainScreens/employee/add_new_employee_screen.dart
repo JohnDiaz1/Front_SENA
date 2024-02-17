@@ -132,15 +132,28 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                         ),
                       ),
                       Spacer(),
-                      Expanded(
+                      Container(
                         child: ButtonWidgetSolid(
                           label: "Guardar",
-                          onTap: () {
-                            employeeProvider.createEmployee(Employee.create(
-                                name: _nameController.text,
-                                phone: _phoneController.text,
-                                position: _positionController.text,
-                                state: EmployeeStatus.Activo));
+                          onTap: () async {
+                            bool response = await employeeProvider.createEmployee(
+                                Employee.
+                                create(
+                                  name: _nameController.text,
+                                  phone: _phoneController.text,
+                                  position: _positionController.text,
+                                  state: EmployeeStatus.Activo));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  response
+                                      ? '¡Empleado creado exitosamente!'
+                                      : 'Error al crear el empleado',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: response ? Colors.green : Colors.red,
+                              ),
+                            );
                           },
                           solidColor: Colors.blue,
                           borderRadius: 4,

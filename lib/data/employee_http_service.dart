@@ -29,16 +29,17 @@ class EmployeeHttpService {
     }
   }
 
-  Future<String> createEmployee(Employee employee) async {
+  Future<bool> createEmployee(Employee employee) async {
     try {
       var uri = Uri.parse(_url + "addEmployee");
       var response = await http.post(uri,
           headers: {"Content-Type": "application/json"},
           body: employeeToJson(employee));
       if (response.statusCode == 201) {
-        return "Se creo el cliente correctamente";
+        return true; // "Se creo el cliente correctamente";
       } else {
         throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+        return false;
       }
     } catch (error) {
       print("Error en Create Cliente: $error");
@@ -62,15 +63,16 @@ class EmployeeHttpService {
     }
   }
 
-  Future<String> deleteEmployeeId(String employeeId) async {
+  Future<bool> deleteEmployeeId(String employeeId) async {
     try {
       var uri = Uri.parse(_url + "deleteEmployee/${employeeId}");
       var response = await http.delete(uri, headers: {"Content-Type": "application/json"});
 
       if (response.statusCode == 204) {
-        return "Se elimino correctamente";
+        return true; // "Se elimino correctamente";
       } else {
         throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+        return false;
       }
 
     } catch(error) {
