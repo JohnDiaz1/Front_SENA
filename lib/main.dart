@@ -1,36 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:front_sena/provider/client_provider.dart';
 import 'package:front_sena/provider/inventory_provider.dart';
 import 'package:front_sena/provider/service_request_provider.dart';
 import 'package:front_sena/provider/employee_provider.dart';
-import 'package:front_sena/mainScreens/ServiceRequest/service_request_screen.dart';
+import 'package:front_sena/mainScreens/serviceRequest/service_request_screen.dart';
 import 'package:front_sena/mainScreens/Home/home_screen.dart';
 
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
-
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
 
   runApp(const MyApp());
 }

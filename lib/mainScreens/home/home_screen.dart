@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:front_sena/provider/client_provider.dart';
 import 'package:front_sena/widgets/app_header.dart';
 import 'package:front_sena/widgets/vertical_side_navigation.dart';
-import 'package:front_sena/MainScreens/ServiceRequest/service_description_screen.dart';
 import 'package:front_sena/MainScreens/main_content_screen.dart';
 import 'package:front_sena/utils/constants_app.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         case 1: return ClientsScreen();
         case 2: return InventoryScreen();
         case 3: return EmployeeScreen();
-        case 4: return ServiceDescriptionScreen();
+        case 4: return MainContent();
         default:
           return const MainContent();
       }

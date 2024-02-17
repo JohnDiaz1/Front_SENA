@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:front_sena/models/service_request_model.dart';
-import 'package:front_sena/Utils/constants_app.dart';
+import 'package:front_sena/utils/constants_app.dart';
 
 class ServiceRequestHttpService {
   final String _url = ConstantsApp.webURL + "serviceRequest/";
@@ -16,7 +17,34 @@ class ServiceRequestHttpService {
     }
   }
 
-  Future<String> createServiceRequest(ServiceRequest serviceRequest) async {
+  Future<ServiceRequest> getServiceRequestById(String serviceId) async {
+    var uri = Uri.parse(_url + "getRequestById/$serviceId");
+    var response = await http.get(uri);
+
+    if(response.statusCode == 200){
+      return ServiceRequest.fromJson(json.decode(response.body));
+    }else {
+      throw("Error al obtener api");
+    }
+  }
+
+  Future<bool> updateServiceRequest(ServiceRequest serviceRequest) async {
+    try {
+      var uri = Uri.parse(_url + "updateRequest");
+      var response = await http.put(uri,
+          headers: {"Content-Type": "application/json"},
+          body: serviceRequestToJson(serviceRequest));
+      if (response.statusCode == 200) {
+        return true; //"Se actualizo la informacion del empleado correctamente";
+      } else {
+        return false; //"Error al actualizar informacion del empleado";
+      }
+    } catch (error) {
+      throw "Error inesperado";
+    }
+  }
+
+  Future<bool> createServiceRequest(ServiceRequest serviceRequest) async {
     try {
       var uri = Uri.parse(_url + "addRequest");
       var response = await http.post(uri,
@@ -25,9 +53,10 @@ class ServiceRequestHttpService {
       );
 
       if (response.statusCode == 201) {
-        return "Se creo el cliente correctamente";
+        return true; //"Se creo el cliente correctamente";
       } else {
-        throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+         print("Error en la solicitud: ${response.statusCode}, ${response.body}");
+         return false;
       }
     } catch(error) {
       print("Error en createServiceRequest: $error");
@@ -35,15 +64,16 @@ class ServiceRequestHttpService {
     }
   }
 
-  Future<String> deleteServiceRequestById(String requestId) async {
+  Future<bool> deleteServiceRequestById(String requestId) async {
     try {
       var uri = Uri.parse(_url + "deleteRequest/${requestId}");
       var response = await http.delete(uri, headers: {"Content-Type": "application/json"});
 
       if (response.statusCode == 204) {
-        return "Se elimino correctamente";
+        return true; // "Se elimino correctamente";
       } else {
-        throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+        print("Error en la solicitud: ${response.statusCode}, ${response.body}");
+        return false;
       }
 
     } catch(error) {

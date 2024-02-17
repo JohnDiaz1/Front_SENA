@@ -9,7 +9,8 @@ import 'package:front_sena/models/service_request_model.dart';
 import 'package:front_sena/widgets/pagination_widget.dart';
 import 'package:front_sena/widgets/button_widget_solid.dart';
 import 'package:front_sena/widgets/button_widget_popup.dart';
-import 'package:front_sena/MainScreens/ServiceRequest/service_description_screen.dart';
+import 'package:front_sena/MainScreens/serviceRequest/add_new_service_request_screen.dart';
+import 'package:front_sena/MainScreens/serviceRequest/update_service_request_screen.dart';
 
 class MainContent extends StatefulWidget {
   const MainContent({super.key});
@@ -21,7 +22,7 @@ class MainContent extends StatefulWidget {
 class _MainContentState extends State<MainContent> {
   Iterable<TableRow>? serviceRequestList;
   late Iterable<TableRow> filteredServiceRequestList;
-  ServiceRequestProvider? provider;
+  late ServiceRequestProvider provider;
   ClientProvider? clientProvider;
 
   @override
@@ -141,7 +142,7 @@ class _MainContentState extends State<MainContent> {
                               label: "Nueva Solicitud",
                               icon: CupertinoIcons.add_circled,
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceDescriptionScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewServiceRequestScreen())).then((_) => _loadMainData());
                               },
                               labelAndIconColor: Colors.white,
                               solidColor: Colors.blue,
@@ -270,7 +271,7 @@ class _MainContentState extends State<MainContent> {
                 iconColor: Colors.blue,
                 text: "Editar",
                 onTap: () {
-                  // Lógica para la opción "Editar"
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateServiceRequestScreen(serviceId: serviceRequest.requestId))).then((_) => _loadMainData());
                 },
               ),
               PopupMenuItemData(
@@ -279,8 +280,20 @@ class _MainContentState extends State<MainContent> {
                 text: "Eliminar",
                 onTap: () {
                   // Lógica para la opción "Eliminar"
-                  setState(() {
-                    provider?.deleteServiceRequestById(serviceRequest.requestId.toString());
+                  setState(() async {
+                    bool response = await provider.deleteServiceRequestById(serviceRequest.requestId.toString());
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          response
+                              ? '¡Solicitud de servicio eliminada exitosamente!'
+                              : 'Error al eliminar la solicitud de servicio',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: response ? Colors.green : Colors.red,
+                      ),
+                    );
+                    _loadMainData();
                   });
                 },
               ),

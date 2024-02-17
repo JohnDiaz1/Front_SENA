@@ -9,17 +9,17 @@ import 'package:front_sena/provider/service_request_provider.dart';
 import 'package:front_sena/models/service_request_model.dart';
 import 'package:front_sena/models/client_model.dart';
 
-class ServiceDescriptionScreen extends StatefulWidget {
+class AddNewServiceRequestScreen extends StatefulWidget {
   final String? itemId;
 
-  const ServiceDescriptionScreen({super.key, this.itemId});
+  const AddNewServiceRequestScreen({super.key, this.itemId});
 
   @override
-  State<ServiceDescriptionScreen> createState() =>
-      _ServiceDescriptionScreenState();
+  State<AddNewServiceRequestScreen> createState() =>
+      _AddNewServiceRequestScreenState();
 }
 
-class _ServiceDescriptionScreenState extends State<ServiceDescriptionScreen> {
+class _AddNewServiceRequestScreenState extends State<AddNewServiceRequestScreen> {
   late List<Client> clientList;
   late ClientProvider clientProvider;
   late ServiceRequestProvider serviceRequestProvider;
@@ -143,8 +143,8 @@ class _ServiceDescriptionScreenState extends State<ServiceDescriptionScreen> {
                       Spacer(),
                       ButtonWidgetSolid(
                         label: "Guardar",
-                        onTap: () {
-                          serviceRequestProvider.createServiceRequest(
+                        onTap: () async {
+                          bool response = await serviceRequestProvider.createServiceRequest(
                             ServiceRequest.create(
                               clientId: clientProvider
                                   .clientsModel
@@ -154,8 +154,19 @@ class _ServiceDescriptionScreenState extends State<ServiceDescriptionScreen> {
                                   .clientId ??
                                   '',
                               description: _descriptionController.text,
-                              requestDate: DateTime.now(),
+                              requestDate: ServiceRequest.parseDateString(DateTime.now().toString()),
                               state: ServiceRequestState.Pendiente,
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                response
+                                    ? '¡Solicitud de servicio creada exitosamente!'
+                                    : 'Error al crear la solicitud de servicio',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: response ? Colors.green : Colors.red,
                             ),
                           );
                         },
