@@ -140,7 +140,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                               label: "Nuevo Item",
                               icon: CupertinoIcons.add_circled,
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewItemScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddNewItemScreen())).then((_) => _loadInventoryData());
                               },
                               labelAndIconColor: Colors.white,
                               solidColor: Colors.blue,
@@ -280,7 +280,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     iconColor: Colors.blue,
                     text: "Editar",
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateItemScreen(itemId: item.inventoryId)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateItemScreen(itemId: item.inventoryId))).then((_) => _loadInventoryData());
                     },
                   ),
                   PopupMenuItemData(
@@ -289,8 +289,20 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     text: "Eliminar",
                     onTap: () {
                       // Lógica para la opción "Eliminar"
-                      setState(() {
-                        provider.deleteItemById(item.inventoryId.toString());
+                      setState(() async {
+                        bool response = await provider.deleteItemById(item.inventoryId.toString());
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              response
+                                  ? '¡Item eliminado exitosamente!'
+                                  : 'Error al eliminar el item',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: response ? Colors.green : Colors.red,
+                          ),
+                        );
+                        _loadInventoryData();
                       });
                     },
                   ),
