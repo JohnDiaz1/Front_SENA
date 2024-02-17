@@ -19,9 +19,10 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void createClient(Client client) async {
-    responseString = await clientHttpService.createClient(client);
+  Future<bool> createClient(Client client) async {
+    response = await clientHttpService.createClient(client);
     notifyListeners();
+    return response;
   }
 
   Future<bool> updateClient(Client client) async {
@@ -30,9 +31,10 @@ class ClientProvider extends ChangeNotifier {
     return response;
   }
 
-  void deleteClientById(String clientId) async {
-  responseString = await clientHttpService.deleteClientById(clientId);
+  Future<bool> deleteClientById(String clientId) async {
+  response = await clientHttpService.deleteClientById(clientId);
   notifyListeners();
+  return response;
   }
 
 }

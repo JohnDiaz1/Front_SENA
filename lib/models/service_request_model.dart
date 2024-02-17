@@ -40,19 +40,19 @@ class ServiceRequest {
     requestId: json["requestId"],
     clientId: json["clientId"],
     description: json["description"],
-    requestDate: _parseDateString(json["requestDate"]),
-    state: _parseServiceRequestStateToString(json["state"]),
+    requestDate: parseDateString(json["requestDate"]),
+    state: parseServiceRequestStateToString(json["state"]),
   );
 
   Map<String, dynamic> toJson() => {
+    "requestId": requestId,
     "clientId": clientId,
     "description": description,
     "requestDate": requestDate.toIso8601String(),
     "state": _parseStringToServiceRequestState(state),
   };
 
-  // Método para parsear la fecha
-  static DateTime _parseDateString(String dateString) {
+  static DateTime parseDateString(String dateString) {
     try {
       return DateFormat("yyyy-MM-dd").parse(dateString);
     } catch (e) {
@@ -66,7 +66,7 @@ class ServiceRequest {
     return DateFormat("yyyy-MM-dd").format(requestDate);
   }
 
-  static ServiceRequestState _parseServiceRequestStateToString(dynamic state) {
+  static ServiceRequestState parseServiceRequestStateToString(dynamic state) {
     switch (state) {
       case "Activo":
         return ServiceRequestState.Activo;

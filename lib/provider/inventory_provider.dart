@@ -19,9 +19,10 @@ class InventoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void createItem(Inventory inventory) async {
-    responseString = await inventoryHttpService.createItem(inventory);
+  Future<bool> createItem(Inventory inventory) async {
+    response = await inventoryHttpService.createItem(inventory);
     notifyListeners();
+    return response;
   }
 
   Future<bool> updateItem(Inventory inventory) async {
@@ -30,9 +31,10 @@ class InventoryProvider extends ChangeNotifier {
     return response;
   }
 
-  void deleteItemById(String itemId) async {
-    responseString = await inventoryHttpService.deleteItemById(itemId);
+  Future<bool> deleteItemById(String itemId) async {
+    response = await inventoryHttpService.deleteItemById(itemId);
     notifyListeners();
+    return response;
   }
 
 }

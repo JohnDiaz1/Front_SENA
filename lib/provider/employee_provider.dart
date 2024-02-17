@@ -19,9 +19,10 @@ class EmployeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void createEmployee(Employee employee) async {
-    responseString = await employeeHttpService.createEmployee(employee);
+  Future<bool> createEmployee(Employee employee) async {
+    response = await employeeHttpService.createEmployee(employee);
     notifyListeners();
+    return response;
   }
 
   Future<bool> updateEmployee(Employee employee) async {
@@ -30,8 +31,9 @@ class EmployeeProvider extends ChangeNotifier {
     return response;
   }
 
-  void deleteEmployeeById(String employeeId) async {
-    responseString = await employeeHttpService.deleteEmployeeId(employeeId);
+  Future<bool> deleteEmployeeById(String employeeId) async {
+    response = await employeeHttpService.deleteEmployeeId(employeeId);
     notifyListeners();
+    return response;
   }
 }

@@ -61,7 +61,8 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
       body: Column(
         children: [
           AppHeaderBack(),
-          Flexible(child: Container(
+          Flexible(
+            child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             padding: EdgeInsets.all(ConstantsApp.defaultPadding),
@@ -162,7 +163,7 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   DropdownButton(
-                    hint: Text("Selecciona el cliente"),
+                    hint: Text("Selecciona el estado"),
                     value: selectedValue,
                     borderRadius: BorderRadius.circular(5.0),
                     onChanged: (newValue) {

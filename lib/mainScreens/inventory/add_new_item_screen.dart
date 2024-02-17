@@ -182,14 +182,25 @@ class _AddNewItemScreenState extends State<AddNewItemScreen> {
                       Expanded(
                         child: ButtonWidgetSolid(
                           label: "Guardar",
-                          onTap: () {
-                            inventoryProvider?.createItem(Inventory.create(
+                          onTap: () async {
+                            bool response = await inventoryProvider.createItem(Inventory.create(
                                 name: _nameController.text,
                                 description: _descriptionController.text,
                                 stock: int.parse(_stockController.text),
                                 precioCompra: double.parse(_precioCompraController.text),
                                 precioVenta: double.parse(_precioVentaController.text)
                             ));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  response
+                                      ? '¡Item creado exitosamente!'
+                                      : 'Error al crear el item',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: response ? Colors.green : Colors.red,
+                              ),
+                            );
                           },
                           solidColor: Colors.blue,
                           borderRadius: 4,

@@ -29,16 +29,17 @@ class InventoryHttpService {
     }
   }
 
-  Future<String> createItem(Inventory inventory) async {
+  Future<bool> createItem(Inventory inventory) async {
     try {
       var uri = Uri.parse(_url + "addItem");
       var response = await http.post(uri,
           headers: {"Content-Type": "application/json"},
           body: inventoryToJson(inventory));
       if (response.statusCode == 201) {
-        return "Se creo el item correctamente";
+        return true; //"Se creo el item correctamente";
       } else {
         throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+        return false;
       }
     } catch (error) {
       print("Error en create item: $error");
@@ -62,15 +63,16 @@ class InventoryHttpService {
     }
   }
 
-  Future<String> deleteItemById(String itemId) async {
+  Future<bool> deleteItemById(String itemId) async {
     try {
       var uri = Uri.parse(_url + "deleteItem/${itemId}");
       var response = await http.delete(uri, headers: {"Content-Type": "application/json"});
 
       if (response.statusCode == 204) {
-        return "Se elimino correctamente";
+        return true; //"Se elimino correctamente";
       } else {
         throw "Error en la solicitud: ${response.statusCode}, ${response.body}";
+        return false;
       }
 
     } catch(error) {
@@ -78,16 +80,5 @@ class InventoryHttpService {
       throw "Error inesperado";
     }
   }
-
- /* Future<List<Flags>> getFlagsByContinent() async {
-    var uri = Uri.parse(_url + "subregion/Northem Europe");
-    var response = await http.get(uri);
-
-    if(response.statusCode == 200){
-      return flagsFromJson(response.body);
-    }else{
-      throw("Error al obtener api");
-    }
-  }*/
 
 }
