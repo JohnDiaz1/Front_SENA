@@ -52,96 +52,101 @@ class _AddNewServiceRequestScreenState extends State<AddNewServiceRequestScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppHeaderBack(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(ConstantsApp.defaultPadding),
-              child: Container(
-                decoration: BoxDecoration(
+          Flexible(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.all(ConstantsApp.defaultPadding),
+              decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(
-                    ConstantsApp.defaultPadding / 2,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(ConstantsApp.defaultPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Añadir Nueva Solicitud de Servcio",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            ?.copyWith(color: Colors.black),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(ConstantsApp.defaultPadding / 2))),
+              margin: EdgeInsets.only(
+                  top: ConstantsApp.defaultPadding * 2,
+                  left: ConstantsApp.defaultPadding,
+                  right: ConstantsApp.defaultPadding * 2,
+                  bottom: ConstantsApp.defaultPadding * 3),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Añadir Nueva Solicitud de Servcio",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: Colors.black),
+                    ),
+                    SizedBox(height: ConstantsApp.defaultPadding),
+                    Text(
+                      "Descripción",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: ConstantsApp.backgroundColor.withOpacity(.5),
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(.4),
+                          width: .7,
+                        ),
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      SizedBox(height: ConstantsApp.defaultPadding),
-                      Text(
-                        "Descripción",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: ConstantsApp.backgroundColor.withOpacity(.5),
-                          border: Border.all(
-                            color: Colors.grey.withOpacity(.4),
-                            width: .7,
+                      child: Padding(
+                        padding: const EdgeInsets.all(ConstantsApp.defaultPadding),
+                        child: TextField(
+                          controller: _descriptionController,
+                          maxLines: 6,
+                          maxLength: 300,
+                          style: TextStyle(fontSize: 12),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
                           ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(ConstantsApp.defaultPadding),
-                          child: TextField(
-                            controller: _descriptionController,
-                            maxLines: 6,
-                            maxLength: 300,
-                            style: TextStyle(fontSize: 12),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                          ),
                         ),
                       ),
-                      SizedBox(height: ConstantsApp.defaultPadding),
-                      Text(
-                        "En este campo deberá describir lo mejor posible el problema a corregir",
-                        style: TextStyle(
-                          color: Colors.grey.withOpacity(.5),
-                          fontSize: 14,
-                        ),
+                    ),
+                    SizedBox(height: ConstantsApp.defaultPadding),
+                    Text(
+                      "En este campo deberá describir lo mejor posible el problema a corregir",
+                      style: TextStyle(
+                        color: Colors.grey.withOpacity(.5),
+                        fontSize: 14,
                       ),
-                      SizedBox(height: ConstantsApp.defaultPadding * 2),
-                      Text(
-                        "Cliente",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: ConstantsApp.defaultPadding * 2),
+                    Text(
+                      "Cliente",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    DropdownButton(
+                      hint: Text("Selecciona el cliente"),
+                      value: selectedValue,
+                      borderRadius: BorderRadius.circular(5.0),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedValue = newValue!;
+                        });
+                      },
+                      items: clientList.map((e) {
+                        return DropdownMenuItem(
+                          child: Text(e.name),
+                          value: e.name,
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: ConstantsApp.defaultPadding),
+                    Text(
+                      "En este campo deberá seleccionar el cliente que hace la petición",
+                      style: TextStyle(
+                        color: Colors.grey.withOpacity(.5),
+                        fontSize: 14,
                       ),
-                      DropdownButton(
-                        hint: Text("Selecciona el cliente"),
-                        value: selectedValue,
-                        borderRadius: BorderRadius.circular(5.0),
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedValue = newValue!;
-                          });
-                        },
-                        items: clientList.map((e) {
-                          return DropdownMenuItem(
-                            child: Text(e.name),
-                            value: e.name,
-                          );
-                        }).toList(),
-                      ),
-                      SizedBox(height: ConstantsApp.defaultPadding),
-                      Text(
-                        "En este campo deberá seleccionar el cliente que hace la petición",
-                        style: TextStyle(
-                          color: Colors.grey.withOpacity(.5),
-                          fontSize: 14,
-                        ),
-                      ),
-                      Spacer(),
-                      ButtonWidgetSolid(
+                    ),
+                    SizedBox(height: ConstantsApp.defaultPadding),
+                    Container(
+                      child: ButtonWidgetSolid(
                         label: "Guardar",
                         onTap: () async {
                           bool response = await serviceRequestProvider.createServiceRequest(
@@ -175,10 +180,10 @@ class _AddNewServiceRequestScreenState extends State<AddNewServiceRequestScreen>
                         icon: Icons.save_rounded,
                         labelAndIconColor: Colors.white,
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              ),
+              )
             ),
           ),
         ],

@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: EdgeInsets.only(left: ConstantsApp.defaultPadding * 2, top: ConstantsApp.defaultPadding * 2),
                             child: Text(
                               buildTitleString(currentIndex: currentIndex),
-                              style: Theme.of(context).textTheme.headline6?.copyWith(color: Colors.black),
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.black),
                             ),
                           ),
                           Expanded(
